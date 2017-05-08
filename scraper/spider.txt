@@ -1,0 +1,20 @@
+import logging
+
+logger = logging.getLogger(__name__)
+from scrapy.http import Request
+
+import urllib
+# do urllib.urlencode(querystring)
+
+querystring = {'p' : 1}
+
+url = 'http://www.pc.gc.ca/listing/voyage-travel/recherche-search_e.asp'
+
+parse_data(self, response):
+  logger.info('response', response)
+
+method = 'GET'
+
+r = Request(url=url, method=method, body=urllib.urlencode(querystring), callback=parse_data)
+
+fetch(r)
