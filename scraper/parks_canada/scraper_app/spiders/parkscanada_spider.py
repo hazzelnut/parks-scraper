@@ -26,6 +26,7 @@ class ParksCanadaSpider(Spider):
   # TODO: scrape contact info
 
   provinces = ['ab','bc','mb','nb','nl','nt','ns','nu','on','pe','qc','sk','ty']
+  # provinces = ['ab']
   url = 'http://www.pc.gc.ca/api/sitecore/PageComponent/GroupSearchResults'
   head_url = 'http://www.pc.gc.ca'
 
@@ -63,9 +64,11 @@ class ParksCanadaSpider(Spider):
         yield request
 
   def parse_location_page(self, response):
-    # about = response.xpath('//main/div[@class="maintextblock"]/text() | //main/p/text()')
+    about = response.xpath('//main/div[@class="maintextblock"]/text() | //main/p[1]/text()')
+    about = ''.join(about.extract())
+    # inspect_response(response, self)
     loader = response.meta['loader']
-    loader.add_value('about', u'bob')
+    loader.add_value('about', about)
     yield loader.load_item()
 
   def parse_results_page(self, response):
