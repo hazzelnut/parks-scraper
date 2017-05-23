@@ -67,16 +67,10 @@ class ParksCanadaSpider(Spider):
     loader = response.meta['loader']
     loader.add_value('about', u'bob')
     yield loader.load_item()
-    # inspect_response(response, self)
 
   def parse_results_page(self, response):
     province = response.meta['province']
     type = response.meta['type']
-
-    """
-    if province is 'ns' and type is 'Parks':
-      inspect_response(response, self)
-    """
 
     locations = response.xpath('//dl')
     for loc in locations:
@@ -93,21 +87,13 @@ class ParksCanadaSpider(Spider):
       loader.add_value('long', u'long')
       loader.add_value('province', unicode(province))
 
-      # problem with this is you get an array
       link = loc.xpath('.//dt/a[1]/@href').extract_first()
-      # Missing Places
-      # Historic Sites 170 / 171: Missing NB - Saint Croix
-      # Parks 44 / 46: Missing BC - Gwaii Haanas, NS - Kejimkuji
 
-      # This link extraction path to another parse is causing
-      # missing places - don't know if it's not loading properly or what
-
-      # NOTE: Maybe besides checking for existing url, check if hitting that URL works
       if link is not None:
         # inspect_response(response, self)
         link = link.encode('ascii')
         loc_url = self.head_url + link
-        request = Request(url=loc_url, callback=self.parse_location_page)
+        request = Request(url=loc_url, callback=self.parse_location_page, dont_filter=True)
         request.meta['loader'] = loader
         yield request
       else:
