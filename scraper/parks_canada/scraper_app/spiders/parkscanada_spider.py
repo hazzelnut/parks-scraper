@@ -19,7 +19,7 @@ class ParksCanadaSpider(Spider):
     'http://www.pc.gc.ca/en/voyage-travel/recherche-tous-parks-all',
   ]
 
-  # TODO: figure out how to enter the park links and scrape their pictures / other info
+  # TODO: scrape pictures if possible?
   # TODO: scrape about hours of operation
   # TODO: scrape facilities, if available - icons?
   # TODO: scrape things to do, if available - icons? 
@@ -104,7 +104,13 @@ class ParksCanadaSpider(Spider):
         yield request
       else:
         """ 
-          If there's no link for a location, load without 'about'
+          If there's no link for a location, load give a dummy value to 'about'
+          - Also means, no value for Hours of Operation
+          - Pictures
+          - Contact information
+          """ lower priority - coming soon
+          - Things to do
+          - Facilities
         """
         loader.add_value('about', u'nope')
         yield loader.load_item()
