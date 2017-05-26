@@ -29,6 +29,7 @@ class Parks(DeclarativeBase):
     name = Column('name', String)
     summary = Column('summary', String, nullable=True)
     about = Column('about', String, nullable=True)
+    hours = Column('hours', String, nullable=True)
     type = Column('type', String)
     lat = Column('lat', String)
     long = Column('long', String)

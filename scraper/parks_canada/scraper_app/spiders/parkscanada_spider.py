@@ -64,14 +64,22 @@ class ParksCanadaSpider(Spider):
         yield request
 
   def parse_location_page(self, response):
-    xpath = ('//main/div[@class="maintextblock"]/text()'
+    about_xpath = ('//main/div[@class="maintextblock"]/text()'
              '| //main/p[1]/text()'
              '| //main/div[1]/following-sibling::text()')
-    about = response.xpath(xpath)
+    about = response.xpath(about_xpath)
     about = ''.join(about.extract())
+
+    hours_xpath = ('//main//section[contains(@class, "hours-of-operation")]//text()')
+    hours = response.xpath(hours_xpath)
+    hours = ''.join(hours.extract())
+    # only 199 locations covered
+    # select name from parks where hours is null;
+
     # inspect_response(response, self)
     loader = response.meta['loader']
     loader.add_value('about', about)
+    loader.add_value('hours', hours or u'nope')
     yield loader.load_item()
 
   def parse_results_page(self, response):
@@ -108,7 +116,7 @@ class ParksCanadaSpider(Spider):
           - Also means, no value for Hours of Operation
           - Pictures
           - Contact information
-          """ lower priority - coming soon
+          # lower priority - coming soon
           - Things to do
           - Facilities
         """

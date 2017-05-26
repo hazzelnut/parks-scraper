@@ -15,6 +15,7 @@ class ParksCanada(Item):
   name = Field()
   summary = Field()
   about = Field()
+  hours = Field()
   type = Field()
   lat = Field()
   long = Field()
