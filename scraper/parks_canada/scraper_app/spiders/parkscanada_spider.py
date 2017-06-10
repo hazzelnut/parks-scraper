@@ -20,7 +20,6 @@ class ParksCanadaSpider(Spider):
   ]
 
   # TODO: scrape pictures if possible?
-  # TODO: scrape about hours of operation
   # TODO: scrape facilities, if available - icons?
   # TODO: scrape things to do, if available - icons? 
   # TODO: scrape contact info
@@ -73,8 +72,6 @@ class ParksCanadaSpider(Spider):
     hours_xpath = ('//main//section[contains(@class, "hours-of-operation")]//text()')
     hours = response.xpath(hours_xpath)
     hours = ''.join(hours.extract())
-    # only 199 locations covered
-    # select name from parks where hours is null;
 
     # inspect_response(response, self)
     loader = response.meta['loader']
@@ -101,7 +98,9 @@ class ParksCanadaSpider(Spider):
       loader.add_value('long', u'long')
       loader.add_value('province', unicode(province))
 
-      link = loc.xpath('.//dt/a[1]/@href').extract_first()
+      link_xpath = ('.//dt/a[1]/@href'
+                  '|.//dd//a[1]/@href')
+      link = loc.xpath(link_xpath).extract_first()
 
       if link is not None:
         # inspect_response(response, self)
@@ -112,10 +111,6 @@ class ParksCanadaSpider(Spider):
         yield request
       else:
         """ 
-          If there's no link for a location, load give a dummy value to 'about'
-          - Also means, no value for Hours of Operation
-          - Pictures
-          - Contact information
           # lower priority - coming soon
           - Things to do
           - Facilities
