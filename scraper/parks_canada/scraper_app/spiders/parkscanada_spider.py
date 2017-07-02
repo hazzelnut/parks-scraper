@@ -24,8 +24,8 @@ class ParksCanadaSpider(Spider):
   # TODO: scrape things to do, if available - icons? 
   # TODO: scrape contact info
 
-  provinces = ['ab','bc','mb','nb','nl','nt','ns','nu','on','pe','qc','sk','ty']
-  # provinces = ['mb']
+  # provinces = ['ab','bc','mb','nb','nl','nt','ns','nu','on','pe','qc','sk','ty']
+  provinces = ['mb']
   url = 'http://www.pc.gc.ca/api/sitecore/PageComponent/GroupSearchResults'
   head_url = 'http://www.pc.gc.ca'
 
@@ -73,10 +73,17 @@ class ParksCanadaSpider(Spider):
     hours = response.xpath(hours_xpath)
     hours = ''.join(hours.extract())
 
+    # trying one image for now
+    image_xpath = ('//*[@id="image1"]/figure/img/@src')
+    image_urls = response.xpath(image_xpath)
+    image_urls = image_urls.extract()
+    
     # inspect_response(response, self)
     loader = response.meta['loader']
     loader.add_value('about', about)
     loader.add_value('hours', hours or u'nope')
+    loader.add_value('image_urls', image_urls or u'nope')
+
     yield loader.load_item()
 
   def parse_results_page(self, response):
@@ -116,4 +123,5 @@ class ParksCanadaSpider(Spider):
           - Facilities
         """
         loader.add_value('about', u'nope')
+        loader.add_value('hours', u'nope')
         yield loader.load_item()

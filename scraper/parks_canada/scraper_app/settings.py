@@ -12,3 +12,6 @@ DATABASE = {
   'password': '',
   'database': 'parks',
 }
+
+# Directory to store images
+IMAGES_STORE = 'images'

@@ -1,7 +1,23 @@
 from sqlalchemy.orm import sessionmaker
 from models import Parks, db_connect, create_parks_table
 
+from scrapy.pipelines.images import ImagesPipeline 
+from scrapy.http import Request
+from scrapy.exceptions import DropItem
+
 class ParksCanadaPipeline(object):
+  """ Download images from url - goes to item_completed"""
+  def get_media_requests(self, item, info):
+    for image_url in item['image_urls']:
+      yield scrapy.Request(image_url)
+
+  def item_completed(self, results, item, info):
+    image_paths = [x['path'] for ok, x in results if ok]
+    if not image_paths:
+      raise DropItem("Item contains no images")
+    # item['image_paths'] = image_paths
+    return item
+
   """ParksCanada pipeline for storing scraped items in the database"""
   def __init__(self):
     """

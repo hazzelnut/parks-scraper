@@ -20,3 +20,5 @@ class ParksCanada(Item):
   lat = Field()
   long = Field()
   province = Field()
+  image_urls = Field()
+  images = Field()
