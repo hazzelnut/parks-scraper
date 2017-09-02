@@ -73,16 +73,18 @@ class ParksCanadaSpider(Spider):
     hours = response.xpath(hours_xpath)
     hours = ''.join(hours.extract())
 
+    '''
     # trying one image for now
     image_xpath = ('//*[@id="image1"]/figure/img/@src')
     image_urls = response.xpath(image_xpath)
     image_urls = image_urls.extract()
+    '''
     
     # inspect_response(response, self)
     loader = response.meta['loader']
     loader.add_value('about', about)
     loader.add_value('hours', hours or u'nope')
-    loader.add_value('image_urls', image_urls or u'nope')
+    # loader.add_value('image_urls', image_urls or u'nope')
 
     yield loader.load_item()
 

@@ -6,6 +6,8 @@ from scrapy.http import Request
 from scrapy.exceptions import DropItem
 
 class ParksCanadaPipeline(object):
+
+  '''
   """ Download images from url - goes to item_completed"""
   def get_media_requests(self, item, info):
     for image_url in item['image_urls']:
@@ -17,6 +19,7 @@ class ParksCanadaPipeline(object):
       raise DropItem("Item contains no images")
     # item['image_paths'] = image_paths
     return item
+  '''
 
   """ParksCanada pipeline for storing scraped items in the database"""
   def __init__(self):
