@@ -88,6 +88,13 @@ class ParksCanadaSpider(Spider):
 
     yield loader.load_item()
 
+  def url_join(self, urls, repsonse):
+    joined_urls = []
+    for url in urls:
+      joined_urls.append(response.urljoin(url))
+
+    return joined_urls
+
   def parse_results_page(self, response):
     province = response.meta['province']
     type = response.meta['type']
