@@ -2,7 +2,10 @@ BOT_NAME = 'parkscanada'
 
 SPIDER_MODULES = ['scraper_app.spiders']
 
-ITEM_PIPELINES = {'scraper_app.pipelines.ParksCanadaPipeline': 100}
+ITEM_PIPELINES = {
+  'scraper_app.pipelines.ParksCanadaPipeline': 100,
+  'scrapy.pipelines.images.ImagesPipeline': 1,
+}
 
 DATABASE = {
   'drivername': 'postgres',
@@ -14,4 +17,4 @@ DATABASE = {
 }
 
 # Directory to store images
-IMAGES_STORE = 'images'
+IMAGES_STORE = 'images/'

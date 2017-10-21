@@ -1,4 +1,6 @@
 #! -*- coding: utf-8 -*-
+import urllib
+import urlparse
 
 from scrapy.spiders import Spider 
 from scrapy.selector import Selector
@@ -8,8 +10,8 @@ from scrapy.http import FormRequest, Request
 from scrapy.shell import inspect_response
 
 from scraper_app.items import ParksCanada 
+from scraper_app.items import ParksCanadaImages
 
-import urllib
 
 class ParksCanadaSpider(Spider):
   """Spider for information from parkscanada location's page"""
@@ -73,22 +75,24 @@ class ParksCanadaSpider(Spider):
     hours = response.xpath(hours_xpath)
     hours = ''.join(hours.extract())
 
-    '''
-    # trying one image for now
-    image_xpath = ('//*[@id="image1"]/figure/img/@src')
+    # trying one image for now 
+    # inspect_response(response, self)
+    # need to extract multiple images
+    image_xpath = ('//div[@class="tabpanels"]//img/@src')
     image_urls = response.xpath(image_xpath)
     image_urls = image_urls.extract()
-    '''
+    image_urls = self.url_join(image_urls, response)
     
     # inspect_response(response, self)
     loader = response.meta['loader']
     loader.add_value('about', about)
     loader.add_value('hours', hours or u'nope')
+    # TODO: should be loading into the class ParksCanadaImage
     # loader.add_value('image_urls', image_urls or u'nope')
 
     yield loader.load_item()
 
-  def url_join(self, urls, repsonse):
+  def url_join(self, urls, response):
     joined_urls = []
     for url in urls:
       joined_urls.append(response.urljoin(url))
